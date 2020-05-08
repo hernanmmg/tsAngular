@@ -21,13 +21,21 @@ export class PlayerDialogComponent implements OnInit {
       .pipe(take(1))
       .subscribe(teams => {
         if (teams.length > 0) {
-          this.team = team[0];
+          this.team = teams[0];
         }
       });
   }
 
-  private newPlayer(playerFromValue) {
-    const key = this.playerService.addPlayer(playerFromValue).key;
+  private newPlayer(playerFormValue) {
+    const key = this.playerService.addPlayer(playerFormValue).key;
+    const playerFormValueKey = {
+      ...playerFormValue,
+      key
+    };
+    const formattedTeam = {
+      ...this.team,
+      players: [...(this.team.players ? this.team.players : []), playerFormValueKey]
+    };
+    this.teamService.editTeams(formattedTeam);
   }
-
 }
